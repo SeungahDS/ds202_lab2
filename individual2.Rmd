@@ -1,0 +1,97 @@
+---
+title: "individual2"
+output: html_document
+---
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco)
+
+```
+
+
+1) 
+
+
+```{r}
+hist(choco$Rating, main = "Histogram of Chocolate Ratings")
+
+```
+
+```{r}
+boxplot(choco$Rating, main = "Boxplot of Chocolate Ratings")
+
+summary(choco$Rating)
+
+```
+Most of the ratings are between 2.4 and 3.9. There are no ratings between 3.0 and 3.2. There are four outliers under 2.0.
+
+
+2) 
+
+```{r}
+table(choco$Date)
+a <- table(choco$Date)
+barplot(a, main = "Barplot of Chocolate Rating")
+
+```
+
+Ratings seem to be increasing everywhere up untl 2016. 2014 and 2015 have the highest years for rating count.
+
+
+3) 
+
+```{r}
+plot(x = choco$Cocoa_Percent, y=choco$Rating)
+
+summary(choco$Cocoa_Percent)
+
+
+```
+
+The datapoints are scattered without much relation between cocoa percent and rating. 
+
+
+4)
+```{r}
+#Most common characteristics in lower rated chocolates: Rating of 3.25 or Less
+
+sort(table(choco[choco$Rating <= 3.25, ]$Characteristics1))
+
+  #highest is sandy: 98 
+
+sort(table(choco[choco$Rating <= 3.25, ]$Characteristics2))
+
+  #highest is sweet: 98
+
+sort(table(choco[choco$Rating <= 3.25, ]$Characteristics3))
+
+  #highest is sour: 56
+
+
+
+```
+
+Chocolates with sandy, sweet or sour tastes trend for ratings less than or equal to 3.25
+
+
+```{r}
+
+#Most common characteristics in higher rated chocolates: Rating between 3.5 and 4.0
+
+sort(table(choco[choco$Rating >= 3.5, ]$Characteristics1))
+
+  #highest is creamy: 105
+
+sort(table(choco[choco$Rating >= 3.5, ]$Characteristics2))
+
+  #highest is nutty: 38
+
+sort(table(choco[choco$Rating >= 3.5, ]$Characteristics3))
+
+  #highest is cocoa: 51
+
+```
+
+Chocolates that are creamy, nutty or cocoa trend with ratings between 3.5 and 4.0.
+
