@@ -61,23 +61,12 @@ plot(choco$Cocoa_Percent, choco$Rating,
 ```{r}
 topfavor <- choco[choco$Rating >= 4,]
 
-topfavor5char1 <- sort(table(topfavor$Characteristics1), 
-                   decreasing=TRUE)[1:5]
-topfavor5char1
-
-topfavor5char2 <- sort(table(topfavor$Characteristics2), 
+topfavor5 <- sort(table(topfavor$Characteristics1), 
                    decreasing=TRUE)[1:5]
 
-topfavor5char2
+topfavor5
 
-topfavor5char3 <- sort(table(topfavor$Characteristics3), 
-                   decreasing=TRUE)[1:5]
-
-topfavor5char3
-
-table
-
-barplot(topfavor5char1, main = "Top favor 5")
+barplot(topfavor5, main = "Top favor 5")
 
 ```
 
