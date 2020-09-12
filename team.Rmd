@@ -1,0 +1,38 @@
+---
+title: "team.Rmd"
+output: html_document
+---
+
+```{r}
+
+top10bean <- rev(sort((table(choco$Bean_Origin)), desc = True ))[1:10]
+
+top10bean
+
+top10_bean_avg <- c(
+average_rating_ven = mean(choco[choco$Bean_Origin == "Venezuela", ]$Rating),
+average_rating_peru= mean(choco[choco$Bean_Origin == "Peru", ]$Rating),
+average_rating_ecaudor= mean(choco[choco$Bean_Origin == "Ecuador", ]$Rating),
+average_rating_dr= mean(choco[choco$Bean_Origin == "Dominican Republic", ]$Rating),
+average_rating_mad= mean(choco[choco$Bean_Origin == "Madagascar", ]$Rating),
+average_rating_blend= mean(choco[choco$Bean_Origin == "Blend", ]$Rating),
+average_rating_nic= mean(choco[choco$Bean_Origin == "Nicaragua", ]$Rating),
+average_rating_bra= mean(choco[choco$Bean_Origin == "Brazil", ]$Rating),
+average_rating_bol= mean(choco[choco$Bean_Origin == "Bolivia", ]$Rating),
+average_rating_bel= mean(choco[choco$Bean_Origin == "Belize", ]$Rating)) 
+
+
+names(top10_bean_avg) <- c("Venezuela", "Peru", "Ecuador", "Dominican Republic", "Madagascar", "Blend", "Nicaragua", "Brazil", "Bolivia", "Belize")
+
+plot(top10_bean_avg,xaxt="n", xlab ='Bean Origin', ylab='Average Rating')
+axis(1,at=1:10,labels=names(top10_bean_avg))
+
+summary(top10_bean_avg)
+
+```
+
+These are the top most frequent bean providers for chocolate.
+
+-Madagascar has a higher than average rating than the rest of the countries with a Brazil coming second. 
+
+-The lowest average rating is from Ecuador.
