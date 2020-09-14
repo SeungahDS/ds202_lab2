@@ -1,38 +1,180 @@
 ---
 title: "team.Rmd"
+author: "Seungah Lee, Kedell Guevara"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Reading the data
 ```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+```
+
+# Searching for the Best Chocolates
+
+**1. How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.**
+
+```{r}
+hist(choco$Rating, main = "Histogram of Chocolate Rating")
+
+boxplot(choco$Rating, main = "Boxplot of Chocolate Rating")
+
+summary(choco$Rating)
+
+# Most of the ratings are between 2.4 and 3.9. There are no ratings between 3.0 and 3.2. There are four outliers under 2.0.
+
+```
+
+**2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.**
+
+```{r}
+
+table(choco$Date)
+a <- table(choco$Date)
+barplot(a, main = "Barchart of Chocolate Rating")
+
+# Ratings seem to be increasing everywhere up untl 2016. 2014 and 2015 have the highest years for rating count.
+```
+
+**3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain. Now, we are ready to explore.**
+
+```{r}
+summary(choco$Cocoa_Percent)
+
+plot(choco$Cocoa_Percent, choco$Rating,
+     main = "Scatterplot of Cocoa Percent",
+     xlab = "Cocoa percent",
+     ylab = "Rating")
+
+# The datapoints are scattered without much relation between cocoa percent and rating. Because the rating is an ordinal variable, not a continuous value, this scatter plot does not show a clear correlation, such as a linear relationship.
+```
+
+**4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.**
+
+```{r}
+# Characteristics 1
+topfavor <- choco[choco$Rating >= 4,]
+top5favor <- sort(table(topfavor$Characteristics1), 
+                   decreasing = TRUE)[1:5]
+top5favor
+barplot(top5favor, main = "Top Favorable Characteristic 1")
+
+# Characteristics 2
+topfavor2 <- choco[choco$Rating >= 4,]
+top5favor2 <- sort(table(topfavor$Characteristics2), 
+                   decreasing = TRUE)[1:5]
+top5favor2
+barplot(top5favor2, main = "Top Favorable Characteristics 2")
+
+# Characteristics 3
+topfavor3 <- choco[choco$Rating >= 4,]
+top5favor3 <- sort(table(topfavor3$Characteristics3), 
+                   decreasing = TRUE)[1:5]
+top5favor3
+barplot(top5favor3, main = "Top Favorable Characteristics 3")
+
+# The most favorable characteristics of chocolate were as follows: Creamy, Nutty, Cocoa
+
+```
+
+```{r}
+# Characteristics 1
+lowfavor <- choco[choco$Rating <= 2,]
+low5favor <- sort(table(lowfavor$Characteristics1), 
+                   decreasing = TRUE)[1:5]
+low5favor
+barplot(low5favor, main = "Low Rated Characteristic 1")
+
+# Characteristics 2
+
+lowfavor2 <- choco[choco$Rating <= 2,]
+low5favor2 <- sort(table(lowfavor2$Characteristics2), 
+                   decreasing = TRUE)[1:5]
+low5favor2
+barplot(low5favor2, main = "Low Rated Characteristic 2")
+
+# Characteristics 3
+
+lowfavor3 <- choco[choco$Rating <= 2,]
+low5favor3 <- sort(table(lowfavor3$Characteristics3), 
+                   decreasing = TRUE)[1:5]
+low5favor3
+barplot(low5favor3, main = "Low Rated Characteristic 3")
+
+# The least favorable characteristics of chocolate were as follows: : Sticky, Btter, Very Bitter
+```
+
+
+**5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.**
+
+
+#### First analysis - Top 10 Bean Origins
+
+```{r}
+# These are the top most frequent bean providers for chocolate.
 
 top10bean <- rev(sort((table(choco$Bean_Origin)), desc = True ))[1:10]
 
 top10bean
 
+
 top10_bean_avg <- c(
 average_rating_ven = mean(choco[choco$Bean_Origin == "Venezuela", ]$Rating),
-average_rating_peru= mean(choco[choco$Bean_Origin == "Peru", ]$Rating),
-average_rating_ecaudor= mean(choco[choco$Bean_Origin == "Ecuador", ]$Rating),
-average_rating_dr= mean(choco[choco$Bean_Origin == "Dominican Republic", ]$Rating),
-average_rating_mad= mean(choco[choco$Bean_Origin == "Madagascar", ]$Rating),
-average_rating_blend= mean(choco[choco$Bean_Origin == "Blend", ]$Rating),
-average_rating_nic= mean(choco[choco$Bean_Origin == "Nicaragua", ]$Rating),
-average_rating_bra= mean(choco[choco$Bean_Origin == "Brazil", ]$Rating),
-average_rating_bol= mean(choco[choco$Bean_Origin == "Bolivia", ]$Rating),
-average_rating_bel= mean(choco[choco$Bean_Origin == "Belize", ]$Rating)) 
+average_rating_peru = mean(choco[choco$Bean_Origin == "Peru", ]$Rating),
+average_rating_ecaudor = mean(choco[choco$Bean_Origin == "Ecuador", ]$Rating),
+average_rating_dr = mean(choco[choco$Bean_Origin == "Dominican Republic", ]$Rating),
+average_rating_mad = mean(choco[choco$Bean_Origin == "Madagascar", ]$Rating),
+average_rating_blend = mean(choco[choco$Bean_Origin == "Blend", ]$Rating),
+average_rating_nic = mean(choco[choco$Bean_Origin == "Nicaragua", ]$Rating),
+average_rating_bra = mean(choco[choco$Bean_Origin == "Brazil", ]$Rating),
+average_rating_bol = mean(choco[choco$Bean_Origin == "Bolivia", ]$Rating),
+average_rating_bel = mean(choco[choco$Bean_Origin == "Belize", ]$Rating)) 
 
 
 names(top10_bean_avg) <- c("Venezuela", "Peru", "Ecuador", "Dominican Republic", "Madagascar", "Blend", "Nicaragua", "Brazil", "Bolivia", "Belize")
 
-plot(top10_bean_avg,xaxt="n", xlab ='Bean Origin', ylab='Average Rating')
-axis(1,at=1:10,labels=names(top10_bean_avg))
+plot(top10_bean_avg,xaxt = "n", xlab = 'Bean Origin', ylab = 'Average Rating')
+axis(1,at = 1:10,labels = names(top10_bean_avg))
 
 summary(top10_bean_avg)
+# Madagascar has a higher than average rating than the rest of the countries with a Brazil coming second. 
+# The lowest average rating is from Ecuador.
 
 ```
 
-These are the top most frequent bean providers for chocolate.
 
--Madagascar has a higher than average rating than the rest of the countries with a Brazil coming second. 
 
--The lowest average rating is from Ecuador.
+#### Second analysis - Top 10 Companies
+
+```{r}
+# These are the top most frequent companies for chocolate.
+top10companies <- rev(sort((table(choco$Company)), desc = True ))[1:10]
+
+top10companies
+
+top10_companies_avg <- c(
+average_rating_som = mean(choco[choco$Company == "Soma", ]$Rating),
+average_rating_are = mean(choco[choco$Company == "Arete", ]$Rating),
+average_rating_fre = mean(choco[choco$Company == "Fresco", ]$Rating),
+average_rating_bon = mean(choco[choco$Company == "Bonnat", ]$Rating),
+average_rating_par = mean(choco[choco$Company == "Parlus", ]$Rating),
+average_rating_mor = mean(choco[choco$Company == "A. Morin", ]$Rating),
+average_rating_dom = mean(choco[choco$Company == "Domori", ]$Rating),
+average_rating_val = mean(choco[choco$Company == "Valrhona", ]$Rating),
+average_rating_gui = mean(choco[choco$Company == "Guittard", ]$Rating),
+average_rating_zot = mean(choco[choco$Company == "Zotter", ]$Rating)) 
+
+
+names(top10_companies_avg) <- c("Soma", "Arete", "Fresco", "Bonnat", "Parlus", "A. Morin", "Domori", "Valrhona", "Guittard", "Zotter")
+
+plot(top10_companies_avg,xaxt = "n", xlab = 'Company', ylab = 'Average Rating')
+axis(1,at = 1:10,labels = names(top10_companies_avg))
+
+summary(top10_companies_avg)
+# Of the 10 chocolate companies that make up the largest percentage, Soma received the highest average rating, while Guittard received the lowest rating.
+
+```
